@@ -1,0 +1,385 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  
+  <!-- Hero Section -->
+  <div class="text-center mb-16 animate-fade-in">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-4xl md:text-5xl font-bold mb-6">
+        <span class="bg-gradient-to-r from-gray-900 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Choose Your Loan Type
+        </span>
+      </h2>
+      <p class="text-xl text-gray-600 leading-relaxed mb-8">
+        Select the type of loan you're interested in to begin your personalized eligibility assessment
+      </p>
+      
+      <!-- Progress Indicator -->
+      <div class="flex items-center justify-center mb-8">
+        <div class="flex items-center space-x-4">
+          <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+            1
+          </div>
+          <div class="w-16 h-1 bg-blue-200 rounded-full">
+            <div class="w-full h-1 bg-blue-600 rounded-full animate-pulse"></div>
+          </div>
+          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 font-bold">
+            2
+          </div>
+          <div class="w-16 h-1 bg-gray-200 rounded-full"></div>
+          <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 font-bold">
+            3
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-sm text-gray-500 space-x-8">
+        <span class="font-semibold text-blue-600">Select Type</span>
+        <span>Fill Details</span>
+        <span>Get Results</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loan Types Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-16">
+    
+    <!-- Home Loan Card -->
+    <div class="loan-card group animate-fade-in-up" style="animation-delay: 0.1s;">
+      <a href="/form/home" class="block">
+        <div class="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl border border-white/20 p-8 text-center transform hover:-translate-y-2 hover:scale-105 transition-all duration-300 overflow-hidden">
+          <!-- Gradient Background -->
+          <div class="absolute inset-0 bg-gradient-to-br from-emerald-50 to-teal-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+          
+          <!-- Icon -->
+          <div class="relative z-10 mb-6">
+            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <!-- Content -->
+          <div class="relative z-10">
+            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors duration-300">
+              Home Loan
+            </h3>
+            <p class="text-gray-600 text-sm mb-4 group-hover:text-gray-700 transition-colors duration-300">
+              For purchasing or refinancing your dream home
+            </p>
+            <div class="inline-flex items-center text-emerald-600 font-medium group-hover:translate-x-1 transition-transform duration-300">
+              <span class="mr-2">Apply Now</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <!-- Floating Elements -->
+          <div class="absolute top-4 right-4 w-3 h-3 bg-emerald-400 rounded-full opacity-20 group-hover:opacity-60 group-hover:scale-150 transition-all duration-500"></div>
+          <div class="absolute bottom-4 left-4 w-2 h-2 bg-teal-400 rounded-full opacity-20 group-hover:opacity-60 group-hover:scale-150 transition-all duration-700"></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Education Loan Card -->
+    <div class="loan-card group animate-fade-in-up" style="animation-delay: 0.2s;">
+      <a href="/form/education" class="block">
+        <div class="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl border border-white/20 p-8 text-center transform hover:-translate-y-2 hover:scale-105 transition-all duration-300 overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+          
+          <div class="relative z-10 mb-6">
+            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="relative z-10">
+            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
+              Education Loan
+            </h3>
+            <p class="text-gray-600 text-sm mb-4 group-hover:text-gray-700 transition-colors duration-300">
+              Invest in your future with education financing
+            </p>
+            <div class="inline-flex items-center text-blue-600 font-medium group-hover:translate-x-1 transition-transform duration-300">
+              <span class="mr-2">Apply Now</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="absolute top-4 right-4 w-3 h-3 bg-blue-400 rounded-full opacity-20 group-hover:opacity-60 group-hover:scale-150 transition-all duration-500"></div>
+          <div class="absolute bottom-4 left-4 w-2 h-2 bg-indigo-400 rounded-full opacity-20 group-hover:opacity-60 group-hover:scale-150 transition-all duration-700"></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Business Loan Card -->
+    <div class="loan-card group animate-fade-in-up" style="animation-delay: 0.3s;">
+      <a href="/form/business" class="block">
+        <div class="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl border border-white/20 p-8 text-center transform hover:-translate-y-2 hover:scale-105 transition-all duration-300 overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-purple-50 to-violet-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+          
+          <div class="relative z-10 mb-6">
+            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="relative z-10">
+            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors duration-300">
+              Business Loan
+            </h3>
+            <p class="text-gray-600 text-sm mb-4 group-hover:text-gray-700 transition-colors duration-300">
+              Fuel your business growth and expansion
+            </p>
+            <div class="inline-flex items-center text-purple-600 font-medium group-hover:translate-x-1 transition-transform duration-300">
+              <span class="mr-2">Apply Now</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="absolute top-4 right-4 w-3 h-3 bg-purple-400 rounded-full opacity-20 group-hover:opacity-60 group-hover:scale-150 transition-all duration-500"></div>
+          <div class="absolute bottom-4 left-4 w-2 h-2 bg-violet-400 rounded-full opacity-20 group-hover:opacity-60 group-hover:scale-150 transition-all duration-700"></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Car Loan Card -->
+    <div class="loan-card group animate-fade-in-up" style="animation-delay: 0.4s;">
+      <a href="/form/car" class="block">
+        <div class="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl border border-white/20 p-8 text-center transform hover:-translate-y-2 hover:scale-105 transition-all duration-300 overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-orange-50 to-red-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+          
+          <div class="relative z-10 mb-6">
+            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM21 17a2 2 0 11-4 0 2 2 0 014 0zM13 16c0-3.5-1.5-6-4-6s-4 2.5-4 6"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12V7a1 1 0 011-1h4l2 2h6a1 1 0 011 1v3"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="relative z-10">
+            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300">
+              Car Loan
+            </h3>
+            <p class="text-gray-600 text-sm mb-4 group-hover:text-gray-700 transition-colors duration-300">
+              Drive your dream car with easy financing
+            </p>
+            <div class="inline-flex items-center text-orange-600 font-medium group-hover:translate-x-1 transition-transform duration-300">
+              <span class="mr-2">Apply Now</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="absolute top-4 right-4 w-3 h-3 bg-orange-400 rounded-full opacity-20 group-hover:opacity-60 group-hover:scale-150 transition-all duration-500"></div>
+          <div class="absolute bottom-4 left-4 w-2 h-2 bg-red-400 rounded-full opacity-20 group-hover:opacity-60 group-hover:scale-150 transition-all duration-700"></div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Personal Loan Card -->
+    <div class="loan-card group animate-fade-in-up" style="animation-delay: 0.5s;">
+      <a href="/form/personal" class="block">
+        <div class="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl border border-white/20 p-8 text-center transform hover:-translate-y-2 hover:scale-105 transition-all duration-300 overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-pink-50 to-rose-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+          
+          <div class="relative z-10 mb-6">
+            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="relative z-10">
+            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-pink-600 transition-colors duration-300">
+              Personal Loan
+            </h3>
+            <p class="text-gray-600 text-sm mb-4 group-hover:text-gray-700 transition-colors duration-300">
+              For your personal financial needs and goals
+            </p>
+            <div class="inline-flex items-center text-pink-600 font-medium group-hover:translate-x-1 transition-transform duration-300">
+              <span class="mr-2">Apply Now</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="absolute top-4 right-4 w-3 h-3 bg-pink-400 rounded-full opacity-20 group-hover:opacity-60 group-hover:scale-150 transition-all duration-500"></div>
+          <div class="absolute bottom-4 left-4 w-2 h-2 bg-rose-400 rounded-full opacity-20 group-hover:opacity-60 group-hover:scale-150 transition-all duration-700"></div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Features Section -->
+  <div class="bg-white/60 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 mb-16 animate-fade-in-up" style="animation-delay: 0.6s;">
+    <div class="text-center mb-8">
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">Why Choose Our Loan Predictor?</h3>
+      <p class="text-gray-600 max-w-2xl mx-auto">Experience the future of loan applications with our AI-powered assessment system</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="text-center group">
+        <div class="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <h4 class="font-semibold text-gray-900 mb-2 group-hover:text-green-600 transition-colors duration-300">Instant Results</h4>
+        <p class="text-gray-600 text-sm">Get your loan eligibility status in seconds, not days</p>
+      </div>
+      
+      <div class="text-center group">
+        <div class="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h4 class="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">AI-Powered</h4>
+        <p class="text-gray-600 text-sm">Advanced machine learning algorithms for accurate predictions</p>
+      </div>
+      
+      <div class="text-center group">
+        <div class="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+          </svg>
+        </div>
+        <h4 class="font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors duration-300">Secure & Private</h4>
+        <p class="text-gray-600 text-sm">Your financial data is encrypted and never stored</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out both;
+}
+
+.loan-card {
+  position: relative;
+}
+
+.loan-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 1rem;
+  padding: 2px;
+  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: subtract;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.loan-card:hover::before {
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1280px) {
+  .xl\\:grid-cols-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.xl\\:grid-cols-5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.xl\\:grid-cols-5 {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Add intersection observer for scroll animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-fade-in-up');
+      }
+    });
+  }, observerOptions);
+
+  // Observe loan cards for staggered animation
+  const loanCards = document.querySelectorAll('.loan-card');
+  loanCards.forEach((card, index) => {
+    card.style.animationDelay = `${index * 0.1}s`;
+  });
+
+  // Add click tracking and smooth transitions
+  const loanLinks = document.querySelectorAll('.loan-card a');
+  loanLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Add loading state
+      const card = this.closest('.loan-card');
+      card.style.transform = 'scale(0.95)';
+      card.style.opacity = '0.7';
+      
+      // Navigate after animation
+      setTimeout(() => {
+        window.location.href = this.href;
+      }, 200);
+    });
+  });
+
+  // Parallax effect for floating elements
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const floatingElements = document.querySelectorAll('.loan-card [class*="absolute"]');
+    
+    floatingElements.forEach((element, index) => {
+      const speed = (index % 2 === 0) ? 0.5 : -0.3;
+      const yPos = scrolled * speed;
+      element.style.transform = `translateY(${yPos}px)`;
+    });
+  });
+});
+</script>
+{% endblock %}

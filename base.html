@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Eligibility Predictor</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Tailwind Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          animation: {
+            'gradient': 'gradient 15s ease infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'fade-in': 'fadeIn 0.8s ease-out',
+            'slide-down': 'slideDown 0.6s ease-out',
+            'bounce-gentle': 'bounceGentle 2s infinite',
+          },
+          keyframes: {
+            gradient: {
+              '0%, 100%': {
+                'background-size': '200% 200%',
+                'background-position': 'left center'
+              },
+              '50%': {
+                'background-size': '200% 200%',
+                'background-position': 'right center'
+              }
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' }
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(-10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            slideDown: {
+              '0%': { opacity: '0', transform: 'translateY(-30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            bounceGentle: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-5px)' }
+            }
+          },
+          backgroundImage: {
+            'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+            'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Custom Styles -->
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #3b82f6, #6366f1);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #2563eb, #4f46e5);
+    }
+    
+    /* Animated background particles */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+    }
+    
+    .particle-1 {
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+      top: 10%;
+      left: 10%;
+      animation: float 8s ease-in-out infinite;
+    }
+    
+    .particle-2 {
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+      top: 60%;
+      right: 15%;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+    
+    .particle-3 {
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+      bottom: 20%;
+      left: 20%;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    /* Glassmorphism effect */
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Text shimmer effect */
+    .text-shimmer {
+      background: linear-gradient(
+        90deg,
+        #1f2937 25%,
+        #3b82f6 50%,
+        #1f2937 75%
+      );
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s linear infinite;
+    }
+    
+    @keyframes shimmer {
+      to {
+        background-position: 200% center;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-x-hidden">
+  
+  <!-- Animated Background Particles -->
+  <div class="particle particle-1"></div>
+  <div class="particle particle-2"></div>
+  <div class="particle particle-3"></div>
+  
+  <!-- Background Pattern Overlay -->
+  <div class="absolute inset-0 opacity-5">
+    <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.3) 1px, transparent 0); background-size: 50px 50px;"></div>
+  </div>
+  
+  <!-- Main Container -->
+  <div class="relative z-10 min-h-screen">
+    
+    <!-- Header Section -->
+    <header class="pt-8 pb-6 animate-slide-down">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          
+          <!-- Logo/Icon -->
+          <div class="inline-flex items-center justify-center mb-6 animate-bounce-gentle">
+            <div class="relative">
+              <div class="w-20 h-20 bg-gradient-to-tr from-blue-600 via-purple-600 to-indigo-600 rounded-2xl shadow-2xl flex items-center justify-center transform rotate-3 hover:rotate-6 transition-transform duration-300">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                </svg>
+              </div>
+              <!-- Glow effect -->
+              <div class="absolute inset-0 w-20 h-20 bg-gradient-to-tr from-blue-400 to-purple-400 rounded-2xl blur-xl opacity-50 animate-pulse-slow"></div>
+            </div>
+          </div>
+          
+          <!-- Main Title -->
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 animate-fade-in">
+            <span class="text-shimmer">Loan Eligibility</span>
+            <br>
+            <span class="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              Predictor
+            </span>
+          </h1>
+          
+          <!-- Subtitle -->
+          <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed animate-fade-in" style="animation-delay: 0.3s;">
+            Advanced AI-powered loan eligibility assessment system
+          </p>
+          
+          <!-- Decorative Line -->
+          <div class="flex items-center justify-center mt-8 animate-fade-in" style="animation-delay: 0.6s;">
+            <div class="h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent w-64 relative">
+              <div class="absolute inset-0 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent animate-pulse"></div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </header>
+    
+    <!-- Main Content Area -->
+    <main class="pb-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="mt-auto py-8 border-t border-gray-200/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <div class="flex items-center justify-center space-x-6 mb-4">
+            <!-- Social/Info Links -->
+            <a href="#" class="text-gray-500 hover:text-blue-600 transition-colors duration-300 transform hover:scale-110">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1 15h-2v-6h2v6zm0-8h-2V7h2v2zm1 8h2v-3.5c0-1.93 1.57-3.5 3.5-3.5s3.5 1.57 3.5 3.5V17h2v-3.5c0-3.038-2.462-5.5-5.5-5.5-1.32 0-2.517.472-3.5 1.246V9h-2v8z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-purple-600 transition-colors duration-300 transform hover:scale-110">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.04c-5.5 0-9.96 4.46-9.96 9.96 0 4.41 2.86 8.14 6.82 9.47.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48C19.14 20.18 22 16.45 22 12.04 22 6.54 17.54 2.04 12 2.04z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-indigo-600 transition-colors duration-300 transform hover:scale-110">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M22.46 6c-.85.38-1.78.64-2.75.76 1-.6 1.76-1.55 2.12-2.68-.93.55-1.96.95-3.06 1.17-.88-.94-2.13-1.53-3.51-1.53-2.66 0-4.81 2.16-4.81 4.81 0 .38.04.75.13 1.1-4-.2-7.57-2.11-9.96-5.02-.42.72-.66 1.55-.66 2.44 0 1.67.85 3.14 2.14 4-.79-.02-1.53-.24-2.18-.6v.06c0 2.33 1.66 4.27 3.86 4.71-.4.11-.83.17-1.27.17-.31 0-.62-.03-.92-.08.62 1.94 2.42 3.35 4.55 3.39-1.67 1.31-3.77 2.09-6.05 2.09-.39 0-.78-.02-1.17-.07 2.18 1.4 4.77 2.21 7.55 2.21 9.06 0 14.01-7.5 14.01-14.01 0-.21 0-.42-.01-.63.96-.69 1.8-1.56 2.46-2.55z"/>
+              </svg>
+            </a>
+          </div>
+          <p class="text-gray-500 text-sm">
+            &copy; 2025 Loan Eligibility Predictor. Powered by AI & Machine Learning.
+          </p>
+          <div class="mt-2">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+              System Online
+            </span>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+  </div>
+  
+  <!-- Loading Overlay (for page transitions) -->
+  <div id="pageLoader" class="fixed inset-0 bg-white/90 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
+    <div class="text-center">
+      <div class="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+      <p class="text-gray-600 font-medium">Loading...</p>
+    </div>
+  </div>
+  
+  <!-- JavaScript for Enhanced Interactions -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // Smooth page transitions
+      const links = document.querySelectorAll('a[href^="/"]');
+      const loader = document.getElementById('pageLoader');
+      
+      links.forEach(link => {
+        link.addEventListener('click', function(e) {
+          if (this.href && !this.href.includes('#')) {
+            e.preventDefault();
+            loader.style.opacity = '1';
+            loader.style.pointerEvents = 'auto';
+            
+            setTimeout(() => {
+              window.location.href = this.href;
+            }, 300);
+          }
+        });
+      });
+      
+      // Hide loader when page loads
+      window.addEventListener('load', function() {
+        loader.style.opacity = '0';
+        loader.style.pointerEvents = 'none';
+      });
+      
+      // Parallax effect for particles
+      let ticking = false;
+      
+      function updateParallax() {
+        const scrollTop = window.pageYOffset;
+        const particles = document.querySelectorAll('.particle');
+        
+        particles.forEach((particle, index) => {
+          const speed = (index + 1) * 0.5;
+          const yPos = -(scrollTop * speed);
+          particle.style.transform = translateY(${yPos}px);
+        });
+        
+        ticking = false;
+      }
+      
+      function requestTick() {
+        if (!ticking) {
+          requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      }
+      
+      window.addEventListener('scroll', requestTick);
+      
+      // Add entrance animations to dynamically loaded content
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in');
+          }
+        });
+      }, {
+        threshold: 0.1
+      });
+      
+      // Observe all elements with fade-in-on-scroll class
+      document.querySelectorAll('[data-animate="fade-in"]').forEach(el => {
+        observer.observe(el);
+      });
+      
+    });
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,604 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+  
+  <!-- Progress Indicator -->
+  <div class="flex items-center justify-center mb-12 animate-fade-in">
+    <div class="flex items-center space-x-4">
+      <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+      <div class="w-16 h-1 bg-green-600 rounded-full"></div>
+      <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+      <div class="w-16 h-1 bg-green-600 rounded-full"></div>
+      <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg animate-pulse">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header Section -->
+  <div class="text-center mb-12 animate-slide-down">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4">
+      <span class="bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+        {{ loan_type|capitalize }} Loan
+      </span>
+      <br>
+      <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        Eligibility Result
+      </span>
+    </h2>
+    <p class="text-xl text-gray-600">Your personalized loan assessment is complete</p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- Main Result Card -->
+    <div class="lg:col-span-2 space-y-8">
+      
+      <!-- Result Status Card -->
+      <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-8 transform hover:scale-[1.02] transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.1s;">
+        <div class="text-center mb-8">
+          <!-- Dynamic Result Icon and Status -->
+          {% if result.result.lower() in ['approved', 'eligible', 'qualified'] %}
+            <div class="w-24 h-24 mx-auto bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-2xl mb-6 animate-bounce-gentle">
+              <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-3xl font-bold text-green-600 mb-2">Congratulations!</h3>
+            <p class="text-xl text-gray-700 mb-4">Your loan application is <span class="font-bold text-green-600">{{ result.result }}</span></p>
+            <div class="inline-flex items-center px-6 py-3 bg-green-100 text-green-800 rounded-full font-semibold">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+              </svg>
+              High Approval Probability
+            </div>
+          {% elif result.result.lower() in ['rejected', 'denied', 'not eligible'] %}
+            <div class="w-24 h-24 mx-auto bg-gradient-to-br from-red-500 to-pink-600 rounded-full flex items-center justify-center shadow-2xl mb-6 animate-bounce-gentle">
+              <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </div>
+            <h3 class="text-3xl font-bold text-red-600 mb-2">Application Status</h3>
+            <p class="text-xl text-gray-700 mb-4">Your loan application is <span class="font-bold text-red-600">{{ result.result }}</span></p>
+            <div class="inline-flex items-center px-6 py-3 bg-red-100 text-red-800 rounded-full font-semibold">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+              </svg>
+              Needs Improvement
+            </div>
+          {% else %}
+            <div class="w-24 h-24 mx-auto bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full flex items-center justify-center shadow-2xl mb-6 animate-bounce-gentle">
+              <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+              </svg>
+            </div>
+            
+            <p class="text-xl text-gray-700 mb-4">Your loan application is <span class="font-bold text-yellow-600">{{ result.result }}</span></p>
+            
+          {% endif %} 
+        </div>
+      </div>
+
+      <!-- Feedback Section -->
+      <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-8 transform hover:scale-[1.02] transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.2s;">
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+          </div>
+          <h4 class="text-2xl font-bold text-gray-900">
+            Personalized Recommendations
+          </h4>
+        </div>
+        
+        <div class="space-y-4">
+          {% for tip in result.feedback %}
+            <div class="feedback-item flex items-start p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border-l-4 border-blue-500 transform hover:translate-x-2 transition-transform duration-300 animate-fade-in-up" style="animation-delay: {{ loop.index0 * 0.1 + 0.3 }}s;">
+              <div class="flex-shrink-0 mr-4">
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="flex-grow">
+                <p class="text-gray-700 leading-relaxed">{{ tip }}</p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    
+ <!-- Quick Actions Card -->
+      <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6 transform hover:scale-[1.02] transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.4s;">
+        <h4 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+          <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          Quick Actions
+        </h4>
+        
+        <div class="space-y-3">
+          <a href="/" class="block w-full bg-gradient-to-r from-gray-600 to-gray-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl hover:from-gray-700 hover:to-gray-800 transition-all duration-300 transform hover:-translate-y-1 text-center group">
+            <div class="flex items-center justify-center">
+              <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+              </svg>
+              Back to Home
+            </div>
+          </a>
+          
+          <button onclick="window.print()" class="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:-translate-y-1 text-center group">
+            <div class="flex items-center justify-center">
+              <svg class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+              </svg>
+              Print Result
+            </div>
+          </button>
+          
+          <button onclick="shareResult()" class="block w-full bg-gradient-to-r from-purple-600 to-violet-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl hover:from-purple-700 hover:to-violet-700 transition-all duration-300 transform hover:-translate-y-1 text-center group">
+            <div class="flex items-center justify-center">
+              <svg class="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+              </svg>
+              Share Result
+            </div>
+          </button>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+    <!-- Sidebar -->
+    <div class="lg:col-span-1 space-y-8">
+
+      <!-- Loan Calculation Card -->
+      <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6 transform hover:scale-[1.02] transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.2s;">
+        <div class="flex items-center mb-6">
+          <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 4v4m-6-4v4m12-8a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h4 class="text-xl font-bold text-gray-900">Loan Calculation</h4>
+        </div>
+        
+        <div class="space-y-4">
+          {% if 'annual_income' in user_data %}
+            {% set monthly_income = user_data.annual_income|float / 12 %}
+          {% elif 'monthly_income' in user_data %}
+            {% set monthly_income = user_data.monthly_income|float %}
+          {% elif 'business_turnover' in user_data %}
+            {% set monthly_income = user_data.business_turnover|float * user_data.profit_margin|float / 100 / 12 %}
+          {% elif 'annual_family_income' in user_data %}
+            {% set monthly_income = user_data.annual_family_income|float / 12 %}
+          {% else %}
+            {% set monthly_income = 0 %}
+          {% endif %}
+
+          {% set other_expenses = user_data.other_expenses|float if 'other_expenses' in user_data else 0 %}
+          {% set disposable_income = monthly_income - other_expenses %}
+          
+          <div class="calculation-item p-3 bg-emerald-50 rounded-lg">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-medium text-emerald-700">Monthly Income</span>
+              <span class="text-lg font-semibold text-emerald-800">₹{{ "{:,.2f}".format(monthly_income) }}</span>
+            </div>
+          </div>
+          
+          <div class="calculation-item p-3 bg-red-50 rounded-lg">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-medium text-red-700">Monthly Expenses</span>
+              <span class="text-lg font-semibold text-red-800">₹{{ "{:,.2f}".format(other_expenses) }}</span>
+            </div>
+          </div>
+          
+          <div class="calculation-item p-3 bg-blue-50 rounded-lg border-t-2 border-blue-500">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-medium text-blue-700">Disposable Income</span>
+              <span class="text-lg font-semibold text-blue-800">₹{{ "{:,.2f}".format(disposable_income) }}</span>
+            </div>
+          </div>
+          
+          <div class="calculation-item p-3 bg-purple-50 rounded-lg">
+            <div class="flex justify-between items-center">
+              <span class="text-sm font-medium text-purple-700">Requested Loan</span>
+              <span class="text-lg font-semibold text-purple-800">₹{{ "{:,.2f}".format(user_data.loan_amount|float) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Application Summary Card -->
+      <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-6 transform hover:scale-[1.02] transition-all duration-300 animate-fade-in-up" style="animation-delay: 0.3s;">
+        <div class="flex items-center mb-6">
+          <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+          <h4 class="text-xl font-bold text-gray-900">Your Application</h4>
+        </div>
+        
+        <div class="space-y-4">
+          {% for key, value in user_data.items() %}
+            <div class="application-detail flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0 animate-fade-in-up" style="animation-delay: {{ loop.index0 * 0.05 + 0.4 }}s;">
+              <div class="flex-grow">
+                <dt class="text-sm font-medium text-gray-600 mb-1">
+                  {{ key.replace('_',' ')|capitalize }}
+                </dt>
+                <dd class="text-lg font-semibold text-gray-900">
+                  {{ value }}
+                </dd>
+              </div>
+              <div class="flex-shrink-0 ml-4">
+                <div class="w-8 h-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
+                  <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+     
+
+    </div>
+
+  </div>
+
+  <!-- Next Steps Section -->
+  <div class="mt-16 bg-gradient-to-r from-slate-50 to-blue-50 rounded-2xl shadow-xl border border-white/20 p-8 animate-fade-in-up" style="animation-delay: 0.6s;">
+    <div class="text-center mb-8">
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">What's Next?</h3>
+      <p class="text-gray-600 max-w-2xl mx-auto">Based on your result, here are the recommended next steps for your loan application journey.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="text-center group">
+        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+        </div>
+        <h4 class="font-bold text-gray-900 mb-2 group-hover:text-green-600 transition-colors duration-300">Document Preparation</h4>
+        <p class="text-gray-600 text-sm">Gather all required documents for your loan application</p>
+      </div>
+      
+      <div class="text-center group">
+        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+        </div>
+        <h4 class="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">Bank Consultation</h4>
+        <p class="text-gray-600 text-sm">Schedule a meeting with our loan officers</p>
+      </div>
+      
+      <div class="text-center group">
+        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h4 class="font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors duration-300">Final Approval</h4>
+        <p class="text-gray-600 text-sm">Complete the verification and get your loan approved</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(-10px);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out both;
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 2s infinite;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.6s ease-out;
+}
+
+.feedback-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.feedback-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.feedback-item:hover::before {
+  left: 100%;
+}
+
+.application-detail {
+  position: relative;
+}
+
+.application-detail:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(147, 51, 234, 0.05));
+  border-radius: 0.5rem;
+  margin: -0.25rem;
+  padding: 0.75rem;
+}
+
+/* Print styles */
+@media print {
+  .animate-fade-in-up,
+  .animate-bounce-gentle,
+  .animate-slide-down {
+    animation: none !important;
+  }
+  
+  .transform,
+  .hover\\:scale-\\[1\\.02\\],
+  .hover\\:-translate-y-1,
+  .hover\\:scale-105 {
+    transform: none !important;
+  }
+  
+  .shadow-xl,
+  .shadow-2xl {
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1) !important;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Animate feedback items on scroll
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, observerOptions);
+
+  // Observe feedback items
+  const feedbackItems = document.querySelectorAll('.feedback-item');
+  feedbackItems.forEach(item => {
+    observer.observe(item);
+  });
+
+  // Share result function
+  window.shareResult = function() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Loan Eligibility Result',
+        text: 'Check out my loan eligibility result!',
+        url: window.location.href
+      }).catch(console.error);
+    } else {
+      // Fallback for browsers that don't support native sharing
+      const url = window.location.href;
+      navigator.clipboard.writeText(url).then(() => {
+        // Show toast notification
+        showToast('Link copied to clipboard!');
+      }).catch(() => {
+        showToast('Unable to copy link');
+      });
+    }
+  };
+
+  // Toast notification function
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-y-full opacity-0 transition-all duration-300';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.transform = 'translateY(0)';
+      toast.style.opacity = '1';
+    }, 100);
+    
+    setTimeout(() => {
+      toast.style.transform = 'translateY(full)';
+      toast.style.opacity = '0';
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 300);
+    }, 3000);
+  }
+
+  // Add sparkle effect to result icon
+  const resultIcon = document.querySelector('.animate-bounce-gentle');
+  if (resultIcon) {
+    resultIcon.addEventListener('mouseenter', function() {
+      createSparkles(this);
+    });
+  }
+
+  function createSparkles(element) {
+    const rect = element.getBoundingClientRect();
+    for (let i = 0; i < 5; i++) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'absolute w-1 h-1 bg-yellow-400 rounded-full animate-ping';
+      sparkle.style.left = Math.random() * rect.width + 'px';
+      sparkle.style.top = Math.random() * rect.height + 'px';
+      element.style.position = 'relative';
+      element.appendChild(sparkle);
+      
+      setTimeout(() => {
+        if (sparkle.parentNode) {
+          sparkle.parentNode.removeChild(sparkle);
+        }
+      }, 1000);
+    }
+  }
+
+  // Smooth scroll for long feedback lists
+  const feedbackContainer = document.querySelector('.space-y-4');
+  if (feedbackContainer && feedbackContainer.children.length > 5) {
+    feedbackContainer.style.maxHeight = '400px';
+    feedbackContainer.style.overflowY = 'auto';
+    feedbackContainer.style.paddingRight = '1rem';
+    
+    // Custom scrollbar styles
+    feedbackContainer.style.scrollbarWidth = 'thin';
+    feedbackContainer.style.scrollbarColor = '#3b82f6 #e5e7eb';
+  }
+
+  // Add hover sound effect (optional - can be enabled if sound files are available)
+  const hoverElements = document.querySelectorAll('[class*="hover:"]');
+  hoverElements.forEach(element => {
+    element.addEventListener('mouseenter', function() {
+      // Subtle visual feedback
+      this.style.transform = this.style.transform + ' scale(1.02)';
+    });
+    
+    element.addEventListener('mouseleave', function() {
+      this.style.transform = this.style.transform.replace(' scale(1.02)', '');
+    });
+  });
+
+  // Performance optimization: Pause animations when not visible
+  const handleVisibilityChange = () => {
+    const animations = document.querySelectorAll('[class*="animate-"]');
+    animations.forEach(element => {
+      if (document.hidden) {
+        element.style.animationPlayState = 'paused';
+      } else {
+        element.style.animationPlayState = 'running';
+      }
+    });
+  };
+
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  // Add confetti effect for positive results
+  const resultText = document.querySelector('h3');
+  if (resultText && resultText.textContent.includes('Congratulations')) {
+    setTimeout(() => {
+      createConfetti();
+    }, 1000);
+  }
+
+  function createConfetti() {
+    const colors = ['#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#8b5cf6'];
+    const confettiContainer = document.createElement('div');
+    confettiContainer.className = 'fixed inset-0 pointer-events-none z-40';
+    document.body.appendChild(confettiContainer);
+
+    for (let i = 0; i < 50; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'absolute w-2 h-2 opacity-80';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+      confetti.style.animationDelay = Math.random() * 2 + 's';
+      confetti.style.animation = 'confetti-fall linear infinite';
+      confettiContainer.appendChild(confetti);
+    }
+
+    // Remove confetti after animation
+    setTimeout(() => {
+      document.body.removeChild(confettiContainer);
+    }, 5000);
+  }
+
+  // Add CSS for confetti animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Enhanced print functionality
+  window.addEventListener('beforeprint', function() {
+    // Hide non-essential elements for printing
+    const elementsToHide = document.querySelectorAll('.animate-bounce-gentle svg, .group-hover\\:scale-110, .group-hover\\:translate-x-1');
+    elementsToHide.forEach(el => {
+      el.style.display = 'none';
+    });
+  });
+
+  window.addEventListener('afterprint', function() {
+    // Restore elements after printing
+    const elementsToShow = document.querySelectorAll('.animate-bounce-gentle svg, .group-hover\\:scale-110, .group-hover\\:translate-x-1');
+    elementsToShow.forEach(el => {
+      el.style.display = '';
+    });
+  });
+});
+</script>
+{% endblock %}

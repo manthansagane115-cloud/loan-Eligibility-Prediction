@@ -1,0 +1,7 @@
+### Install Dependencies
+
+pip install -r requirements.txt
+
+### Run the App
+
+flask run 
