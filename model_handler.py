@@ -112,19 +112,46 @@ class RandomForestModelHandler:
         self.pipeline = data.get("pipeline")
         self.best_params_ = data.get("best_params")
 
-import random
+
 from typing import Literal, List
 from pydantic import BaseModel, Field
 from langchain_google_genai import ChatGoogleGenerativeAI
 
+try:
+    import streamlit as st
+except ImportError:
+    st = None
 
-API_KEYS = [
-    "AIzaSyBE9w_pL8Yh61vH6CZQw3nbVnBnOC57UqY",
-    "AIzaSyBl_b_JNzHNdbOZof4xzMnqIXs-YblYEH8"
-]
 
-# Select a random API key
-GOOGLE_API_KEY = random.choice(API_KEYS)
+def _get_google_api_key() -> str:
+    """
+    Resolve the Gemini API key without hardcoding it in source.
+
+    Order of precedence:
+      1. Streamlit secrets (st.secrets["GOOGLE_API_KEY"]) — set this in
+         Streamlit Cloud under App settings -> Secrets.
+      2. GOOGLE_API_KEY environment variable — useful for local dev
+         or non-Streamlit deployments.
+    """
+    if st is not None:
+        try:
+            key = st.secrets.get("GOOGLE_API_KEY")
+            if key:
+                return key
+        except Exception:
+            pass  # no secrets.toml configured locally; fall through to env var
+
+    key = os.environ.get("GOOGLE_API_KEY")
+    if not key:
+        raise RuntimeError(
+            "GOOGLE_API_KEY not found. Set it in Streamlit Cloud "
+            "(App settings -> Secrets -> GOOGLE_API_KEY = \"...\") "
+            "or as an environment variable for local runs."
+        )
+    return key
+
+
+GOOGLE_API_KEY = _get_google_api_key()
 
 # Initialize Gemini
 model = ChatGoogleGenerativeAI(
