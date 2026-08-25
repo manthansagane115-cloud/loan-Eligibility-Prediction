@@ -3,3 +3,4 @@ langchain
 google-generativeai
 langchain-google-genai
 jinja2
+joblib
