@@ -1,8 +1,10 @@
 import os
+import random
 import joblib
 import numpy as np
 import pandas as pd
-from typing import Optional, Tuple, Dict, Any
+from typing import Optional, Tuple, Dict, Any, List, Literal
+
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -11,8 +13,12 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, train_test_split, StratifiedKFold
 from sklearn.metrics import accuracy_score, roc_auc_score, classification_report
 
+from pydantic import BaseModel, Field
+from langchain_google_genai import ChatGoogleGenerativeAI
+
 DEFAULT_MODEL_PATH = os.path.join("models", "rf_model.joblib")
 RANDOM_STATE = 42
+
 
 class RandomForestModelHandler:
     def __init__(self, model_path: str = DEFAULT_MODEL_PATH, random_state: int = RANDOM_STATE):
@@ -31,7 +37,9 @@ class RandomForestModelHandler:
         ])
         categorical_transformer = Pipeline(steps=[
             ("imputer", SimpleImputer(strategy="most_frequent")),
-            ("encoder", OneHotEncoder(handle_unknown="ignore", sparse=False))
+            # sparse_output replaces the deprecated/removed `sparse` kwarg (sklearn >= 1.2,
+            # `sparse` was removed entirely in 1.4+)
+            ("encoder", OneHotEncoder(handle_unknown="ignore", sparse_output=False))
         ])
         preprocessor = ColumnTransformer(transformers=[
             ("num", numeric_transformer, numeric_features),
@@ -68,7 +76,13 @@ class RandomForestModelHandler:
         self.best_params_ = search.best_params_
 
     def train(self, X: pd.DataFrame, y: pd.Series) -> None:
-        raise RuntimeError("Training disabled in placeholder module")
+        # Intentionally disabled: use fit_quick() for a fast fit or
+        # hyperparameter_search() for a tuned fit. This placeholder exists so
+        # any accidental call to .train() fails loudly and immediately rather
+        # than silently doing the wrong thing.
+        raise RuntimeError(
+            "train() is disabled in this module. Use fit_quick() or hyperparameter_search() instead."
+        )
 
     def fit_quick(self, X: pd.DataFrame, y: pd.Series) -> None:
         if self.pipeline is None:
@@ -79,7 +93,6 @@ class RandomForestModelHandler:
         if self.pipeline is None:
             raise RuntimeError("model pipeline not initialized")
         preds = self.pipeline.predict(X)
-        probs = None
         try:
             probs = self.pipeline.predict_proba(X)[:, 1]
         except Exception:
@@ -113,56 +126,40 @@ class RandomForestModelHandler:
         self.best_params_ = data.get("best_params")
 
 
-from typing import Literal, List
-from pydantic import BaseModel, Field
-from langchain_google_genai import ChatGoogleGenerativeAI
+# ---------------------------------------------------------------------------
+# LLM-based loan eligibility evaluation (Gemini via LangChain)
+# ---------------------------------------------------------------------------
 
-try:
-    import streamlit as st
-except ImportError:
-    st = None
+# API keys must come from the environment — never hardcode credentials in
+# source. Set GOOGLE_API_KEYS as a comma-separated list to enable simple
+# round-robin/random key selection (e.g. for spreading across quota), or
+# GOOGLE_API_KEY for a single key.
+_keys_env = os.environ.get("GOOGLE_API_KEYS")
+if _keys_env:
+    API_KEYS = [k.strip() for k in _keys_env.split(",") if k.strip()]
+else:
+    single_key = os.environ.get("GOOGLE_API_KEY")
+    API_KEYS = [single_key] if single_key else []
 
+if not API_KEYS:
+    raise RuntimeError(
+        "No Google API key configured. Set the GOOGLE_API_KEY environment "
+        "variable (or GOOGLE_API_KEYS for multiple, comma-separated)."
+    )
 
-def _get_google_api_key() -> str:
-    """
-    Resolve the Gemini API key without hardcoding it in source.
+GOOGLE_API_KEY = random.choice(API_KEYS)
 
-    Order of precedence:
-      1. Streamlit secrets (st.secrets["GOOGLE_API_KEY"]) — set this in
-         Streamlit Cloud under App settings -> Secrets.
-      2. GOOGLE_API_KEY environment variable — useful for local dev
-         or non-Streamlit deployments.
-    """
-    if st is not None:
-        try:
-            key = st.secrets.get("GOOGLE_API_KEY")
-            if key:
-                return key
-        except Exception:
-            pass  # no secrets.toml configured locally; fall through to env var
+GEMINI_MODEL_NAME = os.environ.get("GEMINI_MODEL_NAME", "gemini-2.5-flash")
 
-    key = os.environ.get("GOOGLE_API_KEY")
-    if not key:
-        raise RuntimeError(
-            "GOOGLE_API_KEY not found. Set it in Streamlit Cloud "
-            "(App settings -> Secrets -> GOOGLE_API_KEY = \"...\") "
-            "or as an environment variable for local runs."
-        )
-    return key
-
-
-GOOGLE_API_KEY = _get_google_api_key()
-
-# Initialize Gemini
 model = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
+    model=GEMINI_MODEL_NAME,
     google_api_key=GOOGLE_API_KEY,
     temperature=0.2
 )
 
-# Pydantic schema for structured output
+
 class LoanEvaluation(BaseModel):
-    result: Literal["Likely Approved", "Guaranteed Approval", "Needs Improvement"] = Field(
+    result: Literal["Likely Approved", "Needs Improvement", "Unlikely Approved"] = Field(
         description="Final loan eligibility evaluation"
     )
     feedback: List[str] = Field(
@@ -170,24 +167,45 @@ class LoanEvaluation(BaseModel):
         description="List of improvement suggestions for approval"
     )
 
-# Wrap model with structured output
+
 evaluation_model = model.with_structured_output(LoanEvaluation)
 
+
 def check_loan_eligibility(loan_type: str, user_data: dict) -> dict:
-    # Calculate monthly disposable income
-    monthly_income = 0
-    if 'annual_income' in user_data:
-        monthly_income = float(user_data['annual_income']) / 12
-    elif 'monthly_income' in user_data:
-        monthly_income = float(user_data['monthly_income'])
-    elif 'business_turnover' in user_data:
-        monthly_income = (
-            float(user_data['business_turnover'])
-            * float(user_data['profit_margin']) / 100
-            / 12
-        )
-    elif 'annual_family_income' in user_data:
-        monthly_income = float(user_data['annual_family_income']) / 12
+    """
+    Evaluate loan eligibility using an LLM given basic financial inputs.
+
+    Raises:
+        ValueError: if required income fields are missing/invalid.
+        RuntimeError: if the underlying LLM call fails (e.g. API disabled,
+            quota exceeded, network error).
+    """
+    monthly_income = 0.0
+    try:
+        if 'annual_income' in user_data:
+            monthly_income = float(user_data['annual_income']) / 12
+        elif 'monthly_income' in user_data:
+            monthly_income = float(user_data['monthly_income'])
+        elif 'business_turnover' in user_data:
+            if 'profit_margin' not in user_data:
+                raise ValueError(
+                    "business_turnover was provided but profit_margin is missing"
+                )
+            monthly_income = (
+                float(user_data['business_turnover'])
+                * float(user_data['profit_margin']) / 100
+                / 12
+            )
+        elif 'annual_family_income' in user_data:
+            monthly_income = float(user_data['annual_family_income']) / 12
+        else:
+            raise ValueError(
+                "No recognized income field found in user_data "
+                "(expected one of: annual_income, monthly_income, "
+                "business_turnover + profit_margin, annual_family_income)"
+            )
+    except (TypeError, ValueError) as e:
+        raise ValueError(f"Invalid income data for eligibility check: {e}") from e
 
     other_expenses = float(user_data.get('other_expenses', 0))
     disposable_income = monthly_income - other_expenses
@@ -205,5 +223,9 @@ User Data: {user_data}
 Based on the monthly disposable income and other factors, evaluate the loan eligibility.
 """
 
-    response = evaluation_model.invoke(prompt)
+    try:
+        response = evaluation_model.invoke(prompt)
+    except Exception as e:
+        raise RuntimeError(f"Loan eligibility evaluation failed: {e}") from e
+
     return response
